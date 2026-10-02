@@ -19,15 +19,15 @@ export async function POST(request: Request) {
     return jsonError(`Check the product fields: ${details}`, 400);
   }
   const { variants, gallery, attributes, ...data } = input.data;
+  const category = data.categoryId
+    ? { id: data.categoryId }
+    : await db.category.upsert({
+        where: { slug: "uncategorized" },
+        update: { enabled: true },
+        create: { name: "Uncategorized", slug: "uncategorized", sortOrder: 0 },
+        select: { id: true },
+      });
   try {
-    const category = data.categoryId
-      ? { id: data.categoryId }
-      : await db.category.upsert({
-          where: { slug: "uncategorized" },
-          update: { enabled: true },
-          create: { name: "Uncategorized", slug: "uncategorized", sortOrder: 0 },
-          select: { id: true },
-        });
     const product = await db.product.create({
       data: {
         ...data,
