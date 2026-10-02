@@ -4,14 +4,15 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "start": "next dev",
+    "start": "next start",
     "build": "next build",
-    "start:production": "next start",
+    "postinstall": "prisma generate",
     "lint": "eslint",
     "db:migrate": "prisma db push",
     "db:seed": "node prisma/seed.mjs"
   },
   "dependencies": {
+    "@vercel/blob": "^2.0.0",
     "@prisma/client": "^6.19.3",
     "lucide-react": "^1.48.0",
     "next": "16.3.6",
@@ -25,11 +26,15 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "dotenv": "^16.6.1",
     "eslint": "^9",
     "eslint-config-next": "16.3.6",
     "prettier": "^3.9.9",
     "prisma": "^6.19.3",
     "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "engines": {
+    "node": ">=20.9.0"
   }
 }

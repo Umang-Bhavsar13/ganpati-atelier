@@ -1,34 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Ganpati Atelier
 
-## Getting Started
+An online store built with Next.js, Prisma, MongoDB, and Stripe.
 
-First, run the development server:
+## Run locally
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Requirements: Node.js 20.9 or newer and a MongoDB database.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. Copy `.env.example` to `.env` and fill in the values.
+2. Install dependencies and generate the Prisma client:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+   ```bash
+   npm ci
+   ```
 
-## Learn More
+3. Initialize and seed the database:
 
-To learn more about Next.js, take a look at the following resources:
+   ```bash
+   npm run db:migrate
+   npm run db:seed
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+4. Start the development server:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+   ```bash
+   npm run dev
+   ```
 
-## Deploy on Vercel
+Open <http://localhost:3000>.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Deploy to Vercel
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Create a MongoDB database (for example, MongoDB Atlas) and allow connections from your Vercel deployment.
+2. Import this Git repository in Vercel. Keep the project root as the Root Directory and leave the Framework Preset set to **Next.js**. Vercel detects the build settings automatically; do not enable static export.
+3. In Vercel Project Settings → Environment Variables, add the variables from `.env.example`. Use production credentials and set `NEXT_PUBLIC_SITE_URL` to the deployed site’s HTTPS URL.
+4. Create a Vercel Blob store and connect it to the project so Vercel provides `BLOB_READ_WRITE_TOKEN`. Admin image uploads use Blob on Vercel; local development writes uploads to `public/uploads`.
+5. Deploy. The `postinstall` script generates Prisma Client during Vercel’s dependency installation.
+6. From a machine with the production environment variables configured, initialize and seed the database once:
+
+   ```bash
+   npm run db:migrate
+   npm run db:seed
+   ```
+
+7. In Stripe, configure a webhook pointing to `https://<your-domain>/api/payments/webhook` for the `checkout.session.completed` event, then set its signing secret as `STRIPE_WEBHOOK_SECRET` in Vercel and redeploy.
+
+Vercel redeploys automatically when changes are pushed to the connected Git branch. Preview and production environment variables can be configured separately in Vercel.

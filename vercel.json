@@ -1,0 +1,10 @@
+{
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
+  "installCommand": "npm ci",
+  "git": {
+    "deploymentEnabled": {
+      "main": true
+    }
+  }
+}

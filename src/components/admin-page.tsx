@@ -1467,9 +1467,8 @@ export function AdminPage() {
               </section>
             </div>
             <p className="admin-tip">
-              <CircleAlert size={16} /> Images are stored locally in the
-              public/uploads folder. Use persistent storage before deploying
-              to a serverless host.
+              <CircleAlert size={16} /> Images use Vercel Blob in production and
+              the public/uploads folder during local development.
             </p>
           </div>
         )}
