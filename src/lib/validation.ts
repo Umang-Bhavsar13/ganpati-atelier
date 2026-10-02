@@ -1,7 +1,13 @@
 import { z } from "zod";
 
-const imageSource = z.union([z.url(), z.string().regex(/^\/uploads\/[a-zA-Z0-9._-]+$/)]);
+const imageSource = z.union([
+  z.url(),
+  z.string().regex(/^\/(?:uploads\/[a-zA-Z0-9._-]+|product-placeholder\.svg)$/),
+]);
 const optionalUrl = z.union([z.literal(""), imageSource]).optional();
+const productImage = z.union([imageSource, z.literal("")])
+  .default("")
+  .transform((value) => value || "/product-placeholder.svg");
 
 export const categoryInput = z.object({
   name: z.string().trim().min(2).max(60),
@@ -25,12 +31,12 @@ export const productInput = z.object({
   price: z.number().int().positive(),
   stock: z.number().int().min(0).default(0),
   height: z.string().max(80).default(""),
-  imageUrl: imageSource,
+  imageUrl: productImage,
   gallery: z.array(imageSource).max(12).default([]),
   attributes: z.record(z.string(), z.string()).default({}),
   featured: z.boolean().default(false),
   enabled: z.boolean().default(true),
-  categoryId: z.string().min(1),
+  categoryId: z.string().default(""),
   variants: z.array(variantInput).default([]),
 });
 

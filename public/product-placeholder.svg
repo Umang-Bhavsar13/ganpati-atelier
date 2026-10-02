@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1100" fill="none">
+  <rect width="900" height="1100" fill="#F2EEE5"/>
+  <circle cx="450" cy="470" r="190" fill="#E4DED1"/>
+  <path d="M450 275c-82 0-143 65-143 145 0 51 27 94 68 119l-31 162h212l-31-162c41-25 68-68 68-119 0-80-61-145-143-145Z" fill="#B96546"/>
+  <path d="M450 347c-34 0-62 28-62 62s28 62 62 62 62-28 62-62-28-62-62-62Z" fill="#E8DCC4"/>
+  <path d="M366 539h168l22 108H344l22-108Z" fill="#CB7950"/>
+  <path d="M245 763h410" stroke="#C9C1B2" stroke-width="3"/>
+  <text x="450" y="827" fill="#59665A" font-family="Georgia,serif" font-size="30" text-anchor="middle" letter-spacing="8">MORYA HOUSE</text>
+  <text x="450" y="878" fill="#8C887D" font-family="Arial,sans-serif" font-size="16" text-anchor="middle" letter-spacing="5">IMAGE COMING SOON</text>
+</svg>

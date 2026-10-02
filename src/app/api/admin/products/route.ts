@@ -11,12 +11,27 @@ export async function GET() {
 export async function POST(request: Request) {
   if (!(await isAdminAuthenticated())) return jsonError("Unauthorized", 401);
   const input = productInput.safeParse(await request.json().catch(() => null));
-  if (!input.success) return jsonError("Check the product fields", 400);
+  if (!input.success) {
+    const details = input.error.issues
+      .slice(0, 3)
+      .map((issue) => `${issue.path.join(".") || "product"}: ${issue.message}`)
+      .join("; ");
+    return jsonError(`Check the product fields: ${details}`, 400);
+  }
   const { variants, gallery, attributes, ...data } = input.data;
   try {
+    const category = data.categoryId
+      ? { id: data.categoryId }
+      : await db.category.upsert({
+          where: { slug: "uncategorized" },
+          update: { enabled: true },
+          create: { name: "Uncategorized", slug: "uncategorized", sortOrder: 0 },
+          select: { id: true },
+        });
     const product = await db.product.create({
       data: {
         ...data,
+        categoryId: category.id,
         gallery: JSON.stringify(gallery),
         attributes: JSON.stringify(attributes),
         variants: { create: variants },

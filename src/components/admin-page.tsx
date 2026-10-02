@@ -781,7 +781,6 @@ export function AdminPage() {
                     <input
                       type="number"
                       min="0"
-                      required
                       value={productForm.stock}
                       onChange={(event) =>
                         setProductForm({
@@ -807,7 +806,6 @@ export function AdminPage() {
                   <label>
                     Category
                     <select
-                      required
                       value={productForm.categoryId}
                       onChange={(event) =>
                         setProductForm({
@@ -825,9 +823,9 @@ export function AdminPage() {
                     </select>
                   </label>
                   <label className="admin-field-wide">
-                    Main image
-                    <input type="file" accept="image/jpeg,image/png,image/webp,image/avif" required={!productForm.imageUrl} onChange={async (event) => { const input = event.currentTarget; const file = input.files?.[0]; if (!file) return; try { const imageUrl = await uploadImage(file); setProductForm({ ...productForm, imageUrl }); setMessage("Main image uploaded."); } catch (error) { setMessage(error instanceof Error ? error.message : "Could not upload image"); } input.value = ""; }} />
-                    <small className="admin-uploaded-file">{productForm.imageUrl || "Choose an image from your computer"}</small>
+                    Main image <span className="field-optional">Optional</span>
+                    <input type="file" accept="image/jpeg,image/png,image/webp,image/avif" onChange={async (event) => { const input = event.currentTarget; const file = input.files?.[0]; if (!file) return; try { const imageUrl = await uploadImage(file); setProductForm({ ...productForm, imageUrl }); setMessage("Main image uploaded."); } catch (error) { setMessage(error instanceof Error ? error.message : "Could not upload image"); } input.value = ""; }} />
+                    <small className="admin-uploaded-file">{productForm.imageUrl || "Choose an image, or leave blank to use the default"}</small>
                   </label>
                   <label>
                     Gallery images

@@ -7,7 +7,13 @@ export async function PATCH(request: Request, context: { params: Promise<{ id: s
   if (!(await isAdminAuthenticated())) return jsonError("Unauthorized", 401);
   const { id } = await context.params;
   const input = productInput.partial().safeParse(await request.json().catch(() => null));
-  if (!input.success) return jsonError("Check the product fields", 400);
+  if (!input.success) {
+    const details = input.error.issues
+      .slice(0, 3)
+      .map((issue) => `${issue.path.join(".") || "product"}: ${issue.message}`)
+      .join("; ");
+    return jsonError(`Check the product fields: ${details}`, 400);
+  }
   const { variants, gallery, attributes, ...data } = input.data;
   try {
     return Response.json(await db.$transaction(async (transaction) => {
